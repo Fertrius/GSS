@@ -21,6 +21,7 @@ const int temp = 11       //  temp      - generator temperature
 const int manual = 10     //  manual    - manual control, STOP button.
 //  manual, STOP button switch system to state where power is from main power line and
 //  all other items idle, generator turned off etc. Like it every day when geneator not needed.
+//  Lets call it default state.
 
 int out = 0               //  main power on(1)/off(0)
 int ins = 0               //  generator power on(1)/off(0)
@@ -31,7 +32,22 @@ int man = 0               //  stop button on(1)/off(0)
 
 void setup() {
   // put your setup code here, to run once:
-
+pinMode(local, INPUT)
+pinMode(outside, INPUT)
+pinMode(inside, INPUT)
+pinMode(starter, OUTPUT)
+pinMode(airpump, OUTPUT)
+pinMode(ignition, OUTPUT)
+pinMode(swoutside, OUTPUT)
+pinMode(swinside, OUTPUT)
+pinMode(buzzer, OUTPUT)
+pinMode(temp, INPUT)
+pinMode(manual, INPUT)
+  // set default state parameters
+digitalWrite(ignition, LOW)
+digitalWrite(aitpump, LOW)
+digitalWrite(swoutside, HIGH)
+digitalWrite(swinside, LOW)
 }
 
 void loop() {
