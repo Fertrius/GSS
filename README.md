@@ -1,2 +1,2 @@
-# GSS
-Generator auto Start with power line Switching
+Generator auto start with power Source Switching (GSS) by
+Fertrius
