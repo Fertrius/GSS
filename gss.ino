@@ -50,7 +50,7 @@ void setup() {
   digitalWrite(airpump, LOW);
   digitalWrite(swoutside, HIGH);
   digitalWrite(swinside, LOW);
-  digitalWrite(buzzer, HIGH);
+  /* digitalWrite(buzzer, HIGH);
   delay(1000);
   digitalWrite(buzzer, LOW);
   delay(1000);
@@ -61,7 +61,7 @@ void setup() {
   digitalWrite(buzzer, HIGH);
   delay(1000);
   digitalWrite(buzzer, LOW);
-  delay(1000);
+  delay(1000); */
 }
 
 void loop() {
@@ -72,12 +72,12 @@ void loop() {
 
   if (loc == LOW && out == LOW && ins == LOW && sta != 3)
   {
-    if (sta == 0)
+    /* if (sta == 0)
     {
       digitalWrite(buzzer, HIGH);
       delay(2000);
       digitalWrite(buzzer, LOW);
-    }
+    } */
     digitalWrite(ignition, HIGH);               //  relay, so it can be at this state all time when geneator needs to work
     digitalWrite(airpump, HIGH);                //  close air pump
     digitalWrite(swoutside, LOW);               //  generator starter on
@@ -88,5 +88,9 @@ void loop() {
     delay(2500);
     digitalWrite(airpump, LOW);                 // open air pump
     sta++;
+  }
+  if (loc == HIGH && out == HIGH && ins == LOW && sta != 3)
+  {
+  sta == 0;
   }
 }
