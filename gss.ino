@@ -5,7 +5,6 @@
 
 //  INPUTS
 const int outside = 2;  //  outside   - main power line control
-
 const int inside = 3; //  inside    - generator power line control
 
 //  OUTPUTS SERVO
@@ -13,25 +12,20 @@ const int airpump = 4;  //  airpump   - air pump on generator needs to be closed
 
 //  OUTPUTS TO 4-RELAY
 const int starter = 5;  //  starter   - turns on generator, only few seonds for start sequnce
-
 const int ignition = 6; //  ignition  - generator standby switch, switch it off to turn geneator off
-
 const int swoutside = 7;  //  swoutside - connect/disconnect main power contartor
-
 const int swinside = 8; //  swinside  - connect/disconnect generator power contartor
 
 //  CONSTANTS
 int out = 0;  //  main power on(1)/off(0)
-
 int ins = 0;  //  generator power on(1)/off(0)
-
 int sta = 0;  //  counter how many time generator try to start
-
 int war = 0;  //  warning
 
 void setup() {
   pinMode(outside, INPUT);
   pinMode(inside, INPUT);
+  pinMode(airpump, OUTPUT);
   pinMode(starter, OUTPUT);
   pinMode(ignition, OUTPUT);
   pinMode(swoutside, OUTPUT);
@@ -48,7 +42,7 @@ void loop() {
   //-------------------------------------------------------------------------------------
   out = digitalRead(outside);
   ins = digitalRead(inside);
-  
+
   //-------------------------------------------------------------------------------------
   //  OUTSIDE POWER LOSSE - TURN ON GENERATOR
   //-------------------------------------------------------------------------------------
@@ -64,7 +58,7 @@ void loop() {
     digitalWrite(airpump, LOW); //  open air pump
     sta++;
   }
-  
+
   //-------------------------------------------------------------------------------------
   //  WARNINGS
   //-------------------------------------------------------------------------------------
@@ -73,7 +67,7 @@ void loop() {
     war++;
     digitalWrite(ignition, LOW);  //  turn off generator
   }
-  
+
   //-------------------------------------------------------------------------------------
   //  SWITCH POWER TO GENERATOR - switch off outside and switch on inside in 2 minutes
   //-------------------------------------------------------------------------------------
@@ -83,7 +77,7 @@ void loop() {
     delay(120000);
     digitalWrite(swinside, HIGH); //  turn on inside switch
   }
-  
+
   //-------------------------------------------------------------------------------------
   // OUTSIDE POWER RESTORED - switch off inside, switch on outside and turn off generator
   //-------------------------------------------------------------------------------------
@@ -95,7 +89,7 @@ void loop() {
     digitalWrite(swoutside, HIGH);  // turn on outside power line
     sta = 0;
   }
-  
+
   //-------------------------------------------------------------------------------------
   //  RESET WARNING COUNTER
   //-------------------------------------------------------------------------------------
