@@ -1,24 +1,25 @@
 /*
-   GSS (Generator auto Start with power Switching) by
+   Generator auto start with power Source Switching (GSS) by
    Fertrius
+   stardate: 202010191815 IF
 */
 
 //  INPUTS
-const int outside = 2;  //  outside   - main power line control
-const int inside = 3; //  inside    - generator power line control
+const int outside = 6;  //  outside   - main power line control
+const int inside = 7; //  inside    - generator power line control
 
 //  OUTPUTS SERVO
-const int airpump = 4;  //  airpump   - air pump on generator needs to be closed during startup
+const int airpump = 5;  //  airpump   - air pump on generator needs to be closed during startup
 
 //  OUTPUTS TO 4-RELAY
-const int starter = 5;  //  starter   - turns on generator, only few seonds for start sequnce
-const int ignition = 6; //  ignition  - generator standby switch, switch it off to turn geneator off
-const int swoutside = 7;  //  swoutside - connect/disconnect main power contartor
-const int swinside = 8; //  swinside  - connect/disconnect generator power contartor
+const int swoutside = 1;  //  swoutside - connect/disconnect main power contartor
+const int swinside = 2; //  swinside  - connect/disconnect generator power contartor
+const int ignition = 3; //  ignition  - generator standby switch, switch it off to turn geneator off
+const int starter = 4;  //  starter   - turns on generator, only few seonds for start sequnce
 
 //  CONSTANTS
-int out = 0;  //  main power on(1)/off(0)
-int ins = 0;  //  generator power on(1)/off(0)
+int out = 0;  //  main power
+int ins = 0;  //  generator power
 int sta = 0;  //  counter how many time generator try to start
 int war = 0;  //  warning
 
@@ -42,6 +43,16 @@ void loop() {
   //-------------------------------------------------------------------------------------
   out = digitalRead(outside);
   ins = digitalRead(inside);
+
+  //-------------------------------------------------------------------------------------
+  //  SWITCH POWER TO OUTSIDE - switch off inside and switch on outside
+  //-------------------------------------------------------------------------------------
+  if (out == HIGH && ins == LOW)
+  {
+    digitalWrite(swinside, LOW);  //  turn off inside switch
+    delay(1000);
+    digitalWrite(swoutside, HIGH); //  turn on outside switch
+  }
 
   //-------------------------------------------------------------------------------------
   //  OUTSIDE POWER LOSSE - TURN ON GENERATOR
@@ -74,7 +85,7 @@ void loop() {
   if (out == LOW && ins == HIGH)
   {
     digitalWrite(swoutside, LOW); //  turn off outside switch
-    delay(120000);
+    delay(1000);                //  need to be set like told in geerators manual
     digitalWrite(swinside, HIGH); //  turn on inside switch
   }
 
@@ -83,8 +94,9 @@ void loop() {
   //-------------------------------------------------------------------------------------
   if (out == HIGH && ins == HIGH)
   {
+    delay(2000);
     digitalWrite(swinside, LOW);  // turn of generator power line
-    delay(2000);  //  140ms maybe
+    delay(2000);
     digitalWrite(ignition, LOW);  // turn off generator
     digitalWrite(swoutside, HIGH);  // turn on outside power line
     sta = 0;
