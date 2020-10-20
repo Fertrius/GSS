@@ -1,7 +1,7 @@
 /*
    Generator auto start with power Source Switching (GSS) by
    Fertrius
-   stardate: 202010191815 IF
+   stardate: 202010201854
 */
 
 //  INPUTS
