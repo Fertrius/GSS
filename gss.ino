@@ -35,7 +35,7 @@ void setup() {
   digitalWrite(airpump, LOW);
   digitalWrite(swoutside, LOW); // NC mode
   digitalWrite(swinside, LOW);  // NO mode
-//  Serial.begin(9600);
+  Serial.begin(9600);
 }
 
 void loop() {
