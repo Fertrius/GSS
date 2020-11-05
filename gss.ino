@@ -1,8 +1,18 @@
 /*
    Generator auto start with power Source Switching (GSS) by
    Fertrius
-   stardate: 202010201854
+   stardate: 20201106-001750
 */
+
+// TEMPERATURE
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#define ONE_WIRE_BUS 7
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+int deviceCount = 0;
+float tempC0;
+float tempC1;
 
 //  INPUTS
 const int outside = 8;  //  outside   - main power line control
@@ -33,20 +43,47 @@ void setup() {
   pinMode(swinside, OUTPUT);
   digitalWrite(ignition, LOW);
   digitalWrite(airpump, LOW);
-  digitalWrite(swoutside, LOW); // NC mode
+  digitalWrite(swoutside, HIGH); // NC mode
   digitalWrite(swinside, LOW);  // NO mode
   Serial.begin(9600);
+
+  // TEMPERATURE
+  sensors.begin();
+  tempC0 = sensors.getTempCByIndex(0);
+  tempC1 = sensors.getTempCByIndex(1);
+  Serial.println("Locating devices...");
+  Serial.print("Found ");
+  deviceCount = sensors.getDeviceCount();
+  Serial.print(deviceCount);
+  Serial.println(" devices");
 }
 
 void loop() {
+  Serial.println(">>> NEW LOOP START <<<");
+  
+  // TEMPERATURE
+  sensors.requestTemperatures();
+  Serial.print("Temperature is: ");
+  Serial.print(tempC0);
+  Serial.print(" \xC2\xB0");
+  Serial.print("C | ");
+  Serial.print(tempC1);
+  Serial.print(" \xC2\xB0");
+  Serial.println("C");
+  
   // READ DATA
   out = digitalRead(outside);
   ins = digitalRead(inside);
-  Serial.print(out);
-  Serial.print(ins);
-  Serial.print(sta);
-  Serial.print(war);
-  Serial.println(" new loop start");
+  Serial.println("INPUTS: ");
+  Serial.print("OUTSIDE = ");
+  Serial.println(out);
+  Serial.print("INSIDE = ");
+  Serial.println(ins);
+  Serial.print("STARTER = ");
+  Serial.println(sta);
+  Serial.print("WARNING = ");
+  Serial.println(war);
+  Serial.print("STATUS: ");
 
   //  POWER FROM OUTSIDE
   if (out == HIGH && ins == LOW)
